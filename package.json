@@ -1,15 +1,19 @@
 {
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "d": "^1.0.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
   },
-  "name": "fullstack",
+  "name": "my-work",
   "version": "1.0.0",
   "description": "A simple Node.js server with CORS support",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js"
   },
   "author": "lucky",
   "license": "ISC"
