@@ -106,7 +106,7 @@ res.status(200).json({
     success: true,
 });
 };
-
+//login controller
 const login= async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -114,7 +114,7 @@ const login= async (req, res) => {
             message: 'Please provide all required fields',
         });
     }
-    
+    //check if user exists
     try { 
          const user = await User.findOne({ email });
          if (!user) {
@@ -129,17 +129,37 @@ const login= async (req, res) => {
                 message: 'Invalid credentials',
             });
         }
+//check if email is verified
+if(!user.isVerified){
+    return res.status(400).json({
+        message: 'Please verify your email before logging in',
+    });
+}
+
+        //  generate JWT token
       const token = jwt.sign(
     { userId: user._id, role: user.role },
+    
     "shhhhh", // secret
     { expiresIn: '24h' } // options object
       );
-  
-    res.cookie('token', token, { httpOnly: true, 
-        secure: process.env.NODE_ENV === 'production' });
+      // Set cookie options
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  };
+  // Set the token in an HTTP-only cookie
+    res.cookie('token', token, cookieOptions)
+    res.status(200).json({
+    message: 'Login successful',
+    success: true,
+}); 
+
 } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
 }
 };
+//export controllers
 
 export { registerUser, verifyUser, login };
