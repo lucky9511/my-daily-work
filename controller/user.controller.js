@@ -11,7 +11,6 @@ const registerUser = async (req, res) => {
  //create a verification token
  //send verification email
  //send success status to client
-
 const{name, email, password} = req.body;    
     if(!name || !email || !password){
         return res.status(400).json({
@@ -72,4 +71,37 @@ res.status(201).json({
     });
 }
 };
-export { registerUser };
+
+const verifyUser = async (req, res) => {
+    //get token from url
+    //validate token
+    //find user with the token
+    //if not
+    //set isVerified to true
+    //remove verification token
+    //send success status to client
+    //save
+    //return response
+
+const { token } = req.params;
+console.log(token);
+if(!token){
+    return res.status(400).json({
+        message: 'Invalid token',
+    }); 
+}
+const user = await User.findOne({ verificationToken: token });
+if(!user){
+    return res.status(400).json({
+        message: 'Invalid token',
+    }); 
+}
+user.isVerified = true;
+user.verificationToken = undefined;
+await user.save();
+res.status(200).json({
+    message: 'Email verified successfully',
+    success: true,
+});
+};
+export { registerUser,verifyUser };
