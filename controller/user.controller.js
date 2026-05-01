@@ -9,8 +9,7 @@ const registerUser = async (req, res) => {
  //validate data
  //check if user already exists
  //create a user in database
-
- //create a verification token
+ // //create a verification token
  //send verification email
  //send success status to client
 const{name, email, password} = req.body;    
@@ -161,5 +160,4 @@ if(!user.isVerified){
 }
 };
 //export controllers
-
 export { registerUser, verifyUser, login };
